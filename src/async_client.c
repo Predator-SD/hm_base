@@ -408,7 +408,9 @@ int async_shutdown_client(struct conn_client_s *c)
         c->client_dc(c->data, c->foreign_client_index, c->hbs_id);
     }
 
+#ifdef HM_GAMESERVER
     HT_REM(async_clients, c->client_index, strlen(c->client_index), c->pool);
+#endif
 
     hm_pfree(c->pool, c);
 
@@ -644,7 +646,9 @@ static int async_client_accept(struct conn_client_s *client)
 
     snprintf(client->client_index, sizeof(client->client_index), "%lld", client_index++);
 
+#ifdef HM_GAMESERVER
     HT_ADD_WA(async_clients, client->client_index, strlen(client->client_index), client, sizeof(client), client->pool);
+#endif
 
     return 0;
 }
